@@ -5,6 +5,8 @@
 // using api.Models.Interface;
 // using api.Extensions;
 
+using api.Extensions.DependencyInjection;
+
 namespace api
 {
     public class Startup
@@ -38,6 +40,36 @@ namespace api
                 {
                     options.SuppressMapClientErrors = true;
                 });
+
+
+            services.AddJwtAuthentication(options =>
+    {
+        Configuration.GetSection("Authorization").Bind(options);
+    });
+
+            // Configuração da autenticação JWT
+            // var tokenKey = "12345"; // Defina sua chave secreta para geração/validação de tokens
+
+            // services.AddAuthentication(options =>
+            // {
+            //     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            // })
+            // .AddJwtBearer(options =>
+            // {
+            //     options.TokenValidationParameters = new TokenValidationParameters
+            //     {
+            //         ValidateIssuer = true,
+            //         ValidateAudience = true,
+            //         ValidateIssuerSigningKey = true,
+            //         ValidIssuer = "seu_issuer_aqui",
+            //         ValidAudience = "seu_audience_aqui",
+            //         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey))
+            //     };
+            // });
+
+            // Configuração da autorização
+            services.AddAuthorization();
 
         }
 
