@@ -1,7 +1,7 @@
 using api.Models.EntityModel.Addresses;
 using api.Models.EntityModel.JuristicPersons;
 using api.Models.EntityModel.NaturalPersons;
-using api.Models.EntityModel.Roles;
+using api.Models.EntityModel.RoleUsers;
 using api.Models.EntityModel.Users;
 
 namespace api.Models.EntityModel.Persons
@@ -17,7 +17,7 @@ namespace api.Models.EntityModel.Persons
         public DateTime InactivatedOn { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
-        public ICollection<Role>? Roles { get; set; }
+        public RoleUser? RoleUser { get; set; }
         public User? User { get; set; }
         public NaturalPerson? NaturalPerson { get; set; }
         public JuristicPerson? JuristicPerson { get; set; }

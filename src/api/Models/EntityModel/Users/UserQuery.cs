@@ -22,7 +22,8 @@ namespace api.Models.EntityModel.Users
         public static IQueryable<User> IncludeRoles(this IQueryable<User> users)
         {
             return users
-                .Include(user => user.Role);
+                .Include(user => user.RoleUser)
+                .ThenInclude(role => role.Role);
         }
         public static IQueryable<User> IncludeAddress(this IQueryable<User> users)
         {

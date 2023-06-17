@@ -1,6 +1,7 @@
 using api.Models.EntityModel.Addresses;
 using api.Models.EntityModel.JuristicPersons;
 using api.Models.EntityModel.NaturalPersons;
+using api.Models.EntityModel.RoleUsers;
 using api.Models.EntityModel.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -29,7 +30,7 @@ namespace api.Models.EntityModel.Persons
             entity.HasOne(p => p.Address).WithOne(p => p.Person).HasForeignKey<Address>(p => p.PersonId);
             entity.HasOne(p => p.User).WithOne(p => p.Person).HasForeignKey<User>(p => p.PersonId);
             // entity.HasMany(p => p.Applications).WithOne(p => p.Partner).HasForeignKey(p => p.PartnerId);
-            entity.HasMany(p => p.Roles).WithOne(p => p.Holder).HasForeignKey(p => p.HolderId).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(p => p.RoleUser).WithOne(p => p.Holder).HasForeignKey<RoleUser>(p => p.HolderId).OnDelete(DeleteBehavior.Restrict);
 
             // entity.HasMany(p => p.LastPasswords).WithOne(p => p.Person).HasForeignKey(p => p.PersonId).OnDelete(DeleteBehavior.Restrict);
 

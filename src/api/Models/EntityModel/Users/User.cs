@@ -1,5 +1,5 @@
 using api.Models.EntityModel.Persons;
-using api.Models.EntityModel.Roles;
+using api.Models.EntityModel.RoleUsers;
 
 namespace api.Models.EntityModel.Users
 {
@@ -13,6 +13,6 @@ namespace api.Models.EntityModel.Users
         public string? Salt { get; set; }
         public DateTime CreatedAt { get; set; }
         public Person? Person { get; set; }
-        public Role? Role { get; set; }
+        public RoleUser? RoleUser { get; set; }
     }
 }
