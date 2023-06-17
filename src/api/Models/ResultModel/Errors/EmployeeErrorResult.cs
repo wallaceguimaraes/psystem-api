@@ -10,12 +10,10 @@ namespace api.Models.ResultModel.Errors
 
         public EmployeeErrorResult(Employee service)
         {
-            if (service.CompanyRegisterError)
-                Error = "COMPANY_REGISTER_ERROR";
             if (service.EmployeeRegisterError)
                 Error = "EMPLOYEE_REGISTER_ERROR";
-            if (service.CompanyNotFound)
-                Error = "COMPANY_NOT_FOUND";
+            if (service.RoleRegisterError)
+                Error = "ROLE_REGISTER_ERROR";
         }
     }
 }

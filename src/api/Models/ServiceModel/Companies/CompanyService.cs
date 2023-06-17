@@ -1,28 +1,28 @@
 using api.Data.Context;
 using api.Models.EntityModel.Companies;
-using api.Models.EntityModel.Roles;
-using api.Models.ServiceModel.Companies;
+using api.Models.ViewModel.Companies;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Models.ServiceModel.Employees
+namespace api.Models.ServiceModel.Companies
 {
-    public class Employee
+    public class CompanyService
     {
         private readonly ApiDbContext? _dbContext;
-        private readonly ILogger<Employee>? _logger;
-        public Employee(ApiDbContext dbContext, ILogger<Employee> logger)
+        private readonly ILogger<CompanyService>? _logger;
+        public CompanyService(ApiDbContext dbContext, ILogger<CompanyService> logger)
         {
             _dbContext = dbContext;
             _logger = logger;
         }
 
         public Company Company { get; private set; }
-        public Role Role { get; private set; }
+
+        public List<Company> Companies { get; private set; }
 
         public bool CompanyRegisterError { get; private set; }
+        public bool CompanyListError { get; private set; }
+
         public bool CompanyNotFound { get; private set; }
-        public bool EmployeeRegisterError { get; private set; }
-        public bool RoleRegisterError { get; private set; }
 
         public async Task<bool> CreateCompany(Company company)
         {
@@ -39,6 +39,25 @@ namespace api.Models.ServiceModel.Employees
 
             Company = company;
             return true;
+        }
+
+        public async Task<(List<Company> companies, long count)> GetCompanies(GetCompanyModel model)
+        {
+            try
+            {
+                var query = _dbContext.Companies;
+                var count = await query.CountAsync();
+
+                return (await query.ToListAsync(), count);
+
+            }
+            catch (Exception ex)
+            {
+                var error = ex;
+                CompanyListError = true;
+            }
+
+            return (new List<Company>(), 0);
         }
 
         public async Task<bool> UpdateCompany(Company company, long companyId)
@@ -68,23 +87,5 @@ namespace api.Models.ServiceModel.Employees
 
             return true;
         }
-
-        public async Task<bool> CreateRole(Role role)
-        {
-            try
-            {
-                _dbContext.Roles.Add(role);
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                var error = ex;
-                return !(RoleRegisterError = true);
-            }
-
-            Role = role;
-            return true;
-        }
-
     }
 }

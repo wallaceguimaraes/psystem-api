@@ -1,45 +1,45 @@
+#pragma warning disable CS8618
+
+
 using System.ComponentModel.DataAnnotations;
 using api.Models.EntityModel.Companies;
-using api.Validations;
 
 namespace api.Models.ViewModel.Employee
 {
     public class SignupCompanyViewModel
     {
-        [Display(Name = "siglaTipoNegocio"), JsonRequired]
-        public string? BusinessTypeAcronym { get; set; }
-
-        [Display(Name = "tipoNegocio"), JsonRequired]
-        public string? BusinessTypeName { get; set; }
-
-        [Display(Name = "tradeName"), JsonRequired]
+        [Display(Name = "tradeName")]
         public string? TradeName { get; set; }
 
-        [Display(Name = "fullName"), JsonRequired]
+        [Display(Name = "fullName")]
         public string? FullName { get; set; }
 
-        [Display(Name = "taxDocument"), JsonRequired, JsonCnpj]
-        public string? TaxDocument { get; set; }
+        // [Display(Name = "taxDocument"), JsonRequired, JsonCnpj]
+        // public string? TaxDocument { get; set; }
 
-        [Display(Name = "cnaeCode"), JsonRequired]
-        public string? CnaeCode { get; set; }
+        // [Display(Name = "cnaeCode"), JsonRequired]
+        // public string? CnaeCode { get; set; }
 
-        [Display(Name = "systemImplementation")]
-        public DateTime SystemImplementation { get; set; } = DateTime.Now;
+        // [Display(Name = "siglaNegocio")]
+        // public string BusinessAcronym { get; set; }
+
+        // [Display(Name = "negocio")]
+        public string Business { get; set; }
 
         public Company Map()
         {
             return new Company
             {
-                BusinessTypeName = BusinessTypeName,
-                TaxDocument = TaxDocument,
-                TradeName = TradeName,
-                FullName = FullName,
-                CnaeCode = CnaeCode,
-                BusinessTypeAcronym = BusinessTypeAcronym,
-                SystemImplementation = SystemImplementation
+                BusinessTypeName = "Business",
+                TaxDocument = "TaxDocument",
+                TradeName = "TradeName",
+                FullName = "FullName",
+                CnaeCode = "CnaeCode",
+                BusinessTypeAcronym = "BusinessAcronym",
+                SystemImplementation = DateTime.Now
             };
         }
 
     }
 }
+

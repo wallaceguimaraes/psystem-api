@@ -1,7 +1,7 @@
 using api.Models.EntityModel.Companies;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.ResultModel.Successes
+namespace api.ResultModel.Successes.Companies
 {
     public class CompanyJson : IActionResult
     {

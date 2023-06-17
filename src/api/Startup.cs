@@ -23,15 +23,6 @@ namespace api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // var connectionString = Configuration["Database:Mysql"];
-
-            // services.AddTransient<CrawllerService>();
-
-            // services.AddScoped<ICrawllerService, CrawllerService>();
-
-            // services.AddDomainConfigurations(Configuration);
-
-
             services.AddResponseCompression();
             services.AddHttpContextAccessor();
 

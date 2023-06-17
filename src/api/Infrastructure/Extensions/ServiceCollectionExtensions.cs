@@ -1,5 +1,6 @@
 using api.Authorization;
 using api.Models.ServiceModel;
+using api.Models.ServiceModel.Companies;
 using api.Models.ServiceModel.Employees;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -129,6 +130,8 @@ namespace api.Extensions.DependencyInjection
             // services.AddTransient<PartnerRegistration>();
             services.AddTransient<UserAuthentication>();
             services.AddTransient<Employee>();
+            services.AddTransient<CompanyService>();
+
 
             // services.AddTransient<PresetManagement>();
             // services.AddTransient<AnticipationManagement>();
