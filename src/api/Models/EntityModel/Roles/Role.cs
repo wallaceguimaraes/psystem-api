@@ -1,4 +1,5 @@
 using api.Models.EntityModel.Companies;
+using api.Models.EntityModel.RoleUsers;
 
 namespace api.Models.EntityModel.Roles
 {
@@ -10,5 +11,7 @@ namespace api.Models.EntityModel.Roles
         public long? CompanyId { get; set; }
         public Company? Company { get; set; }
         public DateTime CreatedAt { get; set; }
+        public ICollection<RoleUser>? RoleUsers { get; set; }
+
     }
 }
