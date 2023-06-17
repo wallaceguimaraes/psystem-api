@@ -7,7 +7,10 @@
 
 using api.Data.Context;
 using api.Extensions.DependencyInjection;
+using api.Filters;
+using api.Infrastructure.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace api
@@ -23,57 +26,48 @@ namespace api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddResponseCompression();
-            services.AddHttpContextAccessor();
+            // services.Configure<KestrelServerOptions>(options =>
+            //  {
+            //      options.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // Define o tamanho máximo do corpo da solicitação para 10 MB
+            //  });
 
-            services.AddControllers().AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-                })
-                .ConfigureApiBehaviorOptions(options =>
-                {
-                    options.SuppressMapClientErrors = true;
-                });
-
-
-            services.AddJwtAuthentication(options =>
-    {
-        Configuration.GetSection("Authorization").Bind(options);
-    });
-
-            // Configuração da autenticação JWT
-            // var tokenKey = "12345"; // Defina sua chave secreta para geração/validação de tokens
-
-            // services.AddAuthentication(options =>
+            // services.Configure<KestrelServerOptions>(options =>
             // {
-            //     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            // })
-            // .AddJwtBearer(options =>
-            // {
-            //     options.TokenValidationParameters = new TokenValidationParameters
-            //     {
-            //         ValidateIssuer = true,
-            //         ValidateAudience = true,
-            //         ValidateIssuerSigningKey = true,
-            //         ValidIssuer = "seu_issuer_aqui",
-            //         ValidAudience = "seu_audience_aqui",
-            //         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey))
-            //     };
+            //     options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(60); // Define um tempo limite de leitura de cabeçalhos de 60 segundos
+            //     options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(60); // Define um tempo limite de escrita de corpo de 60 segundos
             // });
 
-            // Configuração da autorização
-            // services.AddAuthorization();
+            // services.AddResponseCompression();
+            // services.AddHttpContextAccessor();
 
-            // string connectionString = Configuration["Database:ConnectionString"];
 
-            // services.AddDbContext<ApiDbContext>(options =>
-            // {
-            //     options.UseMySQL(connectionString, mysqlOptions =>
+            services.AddControllersWithViews(options =>
+                    {
+                        options.Filters.Add(typeof(ErrorHandlerAttribute));
+                        options.Filters.Add(typeof(ModelValidationAttribute));
+                    })
+                    .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                        options.SerializerSettings.Converters.Add(new CustomEnumConverter());
+                    })
+                    .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
+
+            // services.AddControllers().AddJsonOptions(options =>
             //     {
-            //         mysqlOptions.MigrationsHistoryTable("__MigrationHistory", "cadastro");
+            //         options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+            //     })
+            //     .ConfigureApiBehaviorOptions(options =>
+            //     {
+            //         options.SuppressMapClientErrors = true;
             //     });
+
+
+            // services.AddJwtAuthentication(options =>
+            // {
+            //     Configuration.GetSection("Authorization").Bind(options);
             // });
+
 
 
             string connectionString = Configuration["ConnectionStrings:ConnectionString"];
@@ -108,33 +102,71 @@ namespace api
 
         }
 
+        // public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        // {
+
+        //     app.Use(async (context, next) =>
+        //       {
+        //           context.Request.BodyReader.ReadTimeout = TimeSpan.FromSeconds(60); // Define um tempo limite de leitura de 60 segundos
+        //           context.Request.BodyWriter.WriteTimeout = TimeSpan.FromSeconds(60); // Define um tempo limite de escrita de 60 segundos
+
+        //           await next();
+        //       });
+
+
+        //     if (env.IsDevelopment())
+        //     {
+        //         app.UseDeveloperExceptionPage();
+        //     }
+        //     else
+        //     {
+        //         app.UseHttpsRedirection();
+        //         app.UseHsts();
+        //     }
+
+        //     app.UseResponseCompression();
+        //     app.UseRouting();
+
+        //     app.UseCors(policy => policy
+        //         .AllowAnyMethod()
+        //         .AllowAnyHeader()
+        //         .SetIsOriginAllowed(origin => true)
+        //         .AllowCredentials());
+
+        //     app.UseAuthorization();
+
+        //     app.UseEndpoints(endpoints =>
+        //     {
+        //         endpoints.MapControllers();
+        //     });
+        // }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHttpsRedirection();
-                app.UseHsts();
-            }
 
-            app.UseResponseCompression();
+            //     app.Use(async (context, next) =>
+            //       {
+            //           context.Request.BodyReader.ReadTimeout = TimeSpan.FromSeconds(60); // Define um tempo limite de leitura de 60 segundos
+            //           context.Request.BodyWriter.WriteTimeout = TimeSpan.FromSeconds(60); // Define um tempo limite de escrita de 60 segundos
+
+            //           await next();
+            //       });
+
+
+            app.UseStaticFiles();
             app.UseRouting();
-
             app.UseCors(policy => policy
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true)
                 .AllowCredentials());
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
         }
     }
 }
