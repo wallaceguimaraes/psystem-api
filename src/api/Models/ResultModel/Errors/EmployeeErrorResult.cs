@@ -8,7 +8,7 @@ namespace api.Models.ResultModel.Errors
     {
         public EmployeeErrorResult() { }
 
-        public EmployeeErrorResult(Employee service)
+        public EmployeeErrorResult(EmployeeService service)
         {
             if (service.EmployeeRegisterError)
                 Error = "EMPLOYEE_REGISTER_ERROR";

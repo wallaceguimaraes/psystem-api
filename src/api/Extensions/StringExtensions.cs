@@ -63,5 +63,14 @@ namespace api.Extensions
             return values.Any(value => string.Equals(str, value, StringComparison.OrdinalIgnoreCase));
         }
 
+
+        public static string RemoveTaxDocumentMask(this string taxDocument)
+        {
+            if (taxDocument == null)
+                return taxDocument;
+
+            return RegexExtensions.SafeReplace(taxDocument, "[^0-9]", "");
+        }
+
     }
 }

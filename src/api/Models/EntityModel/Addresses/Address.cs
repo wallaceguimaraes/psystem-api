@@ -2,7 +2,7 @@ using api.Models.EntityModel.Persons;
 
 namespace api.Models.EntityModel.Addresses
 {
-    public class Address : IEquatable<Address>
+    public class Address
     {
         public long PersonId { get; set; }
         public int CityId { get; set; }

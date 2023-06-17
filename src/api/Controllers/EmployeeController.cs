@@ -1,7 +1,7 @@
 using api.Models.ResultModel.Errors;
-using api.Models.ResultModel.Successes.Roles;
+using api.Models.ResultModel.Successes.Employees;
 using api.Models.ServiceModel.Employees;
-using api.Models.ViewModel.Roles;
+using api.Models.ViewModel.Persons;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -10,23 +10,36 @@ namespace api.Controllers
     public class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;
-        private readonly Employee _service;
+        private readonly EmployeeService _service;
 
-        public EmployeeController(ILogger<EmployeeController> logger, Employee service)
+        public EmployeeController(ILogger<EmployeeController> logger, EmployeeService service)
         {
             _logger = logger;
             _service = service;
         }
 
-        [HttpPost, Route("role")]
-        public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel model)
+        // [HttpPost, Route("role")]
+        // public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel model)
+        // {
+        //     if (!await _service.CreateRole(model.Map()))
+        //     {
+        //         return new EmployeeErrorResult(_service);
+        //     }
+
+        //     return new RoleJson(_service.Role);
+        // }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateEmployee([FromBody] CreatePersonModel model)
         {
-            if (!await _service.CreateRole(model.Map()))
+            if (!await _service.CreateEmployee(model.Map()))
             {
                 return new EmployeeErrorResult(_service);
             }
 
-            return new RoleJson(_service.Role);
+            return new EmployeeJson(_service.Person);
         }
+
+
     }
 }

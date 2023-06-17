@@ -2,7 +2,6 @@ using api.Models.ResultModel.Errors.Company;
 using api.Models.ResultModel.Successes.Companies;
 using api.Models.ServiceModel.Companies;
 using api.Models.ViewModel.Companies;
-using api.Models.ViewModel.Employee;
 using api.ResultModel.Successes.Companies;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +40,7 @@ namespace api.Controllers
         }
 
         [HttpPut, Route("{companyId}")]
-        public async Task<IActionResult> UpdateCompany([FromRoute] string companyId, [FromBody] SignupCompanyViewModel model)
+        public async Task<IActionResult> UpdateCompany([FromRoute] string companyId, [FromBody] CreateCompanyModel model)
         {
             if (!await _service.UpdateCompany(model.Map(), Convert.ToInt32(companyId)))
             {

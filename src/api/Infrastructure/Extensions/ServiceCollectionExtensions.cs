@@ -129,7 +129,7 @@ namespace api.Extensions.DependencyInjection
             // services.AddTransient<AccountConfirmation>();
             // services.AddTransient<PartnerRegistration>();
             services.AddTransient<UserAuthentication>();
-            services.AddTransient<Employee>();
+            services.AddTransient<EmployeeService>();
             services.AddTransient<CompanyService>();
 
 

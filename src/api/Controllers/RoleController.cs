@@ -1,32 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using api.Data.Context;
+using api.Models.ResultModel.Successes.Roles;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/v1/role")]
     public class RoleController : Controller
     {
         private readonly ILogger<RoleController> _logger;
+        private readonly ApiDbContext _dbContext;
 
-        public RoleController(ILogger<RoleController> logger)
+        public RoleController(ILogger<RoleController> logger, ApiDbContext dbContext)
         {
             _logger = logger;
+            _dbContext = dbContext;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpGet]
+        public async Task<IActionResult> GetRoles([FromQuery] string companyId)
         {
-            return View("Error!");
+            var roles = await _dbContext.Roles.Where(role => role.Id == Convert.ToInt32(companyId)).ToListAsync();
+            return new RoleListJson(roles, roles.Count);
         }
     }
+
+
+
 }
