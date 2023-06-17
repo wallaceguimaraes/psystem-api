@@ -1,5 +1,6 @@
 using api.Models.EntityModel.BusinessTypes;
 using api.Models.EntityModel.Cnaes;
+using api.Models.EntityModel.Persons;
 
 namespace api.Models.EntityModel.JuristicPersons
 {
@@ -13,6 +14,8 @@ namespace api.Models.EntityModel.JuristicPersons
         public int? CnaeCode { get; set; }
         public BusinessType? BusinessType { get; set; }
         public Cnae? Cnae { get; set; }
+        public Person? Person { get; set; }
+
 
     }
 }

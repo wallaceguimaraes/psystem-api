@@ -32,7 +32,7 @@ namespace api.Models.ServiceModel
 
         // public Application Application { get; private set; }
         // public Person Holder { get; private set; }
-        public User User { get; private set; } = new User();
+        public User User { get; private set; }
         public bool HashExpired { get; private set; }
         public bool HashIsInvalid { get; private set; }
         public bool NotificationFailed { get; private set; }
@@ -81,7 +81,7 @@ namespace api.Models.ServiceModel
 
             User = await _dbContext.Users
                 .WhereEmail(login)
-                .IncludePerson()
+                // .IncludePerson()
                 .SingleOrDefaultAsync();
 
             if (User == null) return false;

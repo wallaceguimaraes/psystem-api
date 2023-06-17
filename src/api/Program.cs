@@ -1,13 +1,31 @@
-using api;
+using Microsoft.AspNetCore;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace api
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateWebHostBuilder(args).Build().Run();
+        }
 
-var startup = new Startup(builder.Configuration);
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>();
+    }
+}
 
-startup.ConfigureServices(builder.Services);
 
-var app = builder.Build();
+// using api;
 
-startup.Configure(app, app.Environment);
+// var builder = WebApplication.CreateBuilder(args);
 
-app.Run();
+// var startup = new Startup(builder.Configuration);
+
+// startup.ConfigureServices(builder.Services);
+
+// var app = builder.Build();
+
+// startup.Configure(app, app.Environment);
+
+// app.Run();

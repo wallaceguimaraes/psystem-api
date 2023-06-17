@@ -5,7 +5,10 @@
 // using api.Models.Interface;
 // using api.Extensions;
 
+using api.Data.Context;
 using api.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace api
 {
@@ -20,7 +23,7 @@ namespace api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration["Database:Mysql"];
+            // var connectionString = Configuration["Database:Mysql"];
 
             // services.AddTransient<CrawllerService>();
 
@@ -69,7 +72,48 @@ namespace api
             // });
 
             // Configuração da autorização
-            services.AddAuthorization();
+            // services.AddAuthorization();
+
+            // string connectionString = Configuration["Database:ConnectionString"];
+
+            // services.AddDbContext<ApiDbContext>(options =>
+            // {
+            //     options.UseMySQL(connectionString, mysqlOptions =>
+            //     {
+            //         mysqlOptions.MigrationsHistoryTable("__MigrationHistory", "cadastro");
+            //     });
+            // });
+
+
+            string connectionString = Configuration["ConnectionStrings:ConnectionString"];
+            ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
+
+
+            services.AddDbContext<ApiDbContext>(options =>
+            {
+                options.UseMySql(connectionString, serverVersion, mysqlOptions =>
+                {
+                    mysqlOptions.MigrationsHistoryTable("__MigrationHistory", "cadastro")
+                                .SchemaBehavior(MySqlSchemaBehavior.Ignore);
+                });
+            });
+
+            // optionsBuilder.UseMySql("connectionString",
+            //       mysqlOptions => mysqlOptions
+            //           .ServerVersion(new Version(8, 0, 26), ServerType.MySql)
+            //           .SchemaBehavior(MySqlSchemaBehavior.Ignore));
+
+
+            // services.AddDbContext<ApiDbContext>(options =>
+            // {
+            //     options.UseSqlServer(Configuration.GetConnectionString("ConnectionString"),
+            //         sqlServerOptions => sqlServerOptions.MigrationsHistoryTable("__MigrationHistory", "cadastro"));
+            // });
+
+
+            services.AddTransientServices();
+            // services.AddSingletonServices();
+            // services.AddHttpClients();
 
         }
 

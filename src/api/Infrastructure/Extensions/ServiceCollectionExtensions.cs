@@ -1,5 +1,5 @@
 using api.Authorization;
-
+using api.Models.ServiceModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -126,7 +126,7 @@ namespace api.Extensions.DependencyInjection
             // services.AddTransient<SellerRegistration>();
             // services.AddTransient<AccountConfirmation>();
             // services.AddTransient<PartnerRegistration>();
-            // services.AddTransient<UserAuthentication>();
+            services.AddTransient<UserAuthentication>();
             // services.AddTransient<PresetManagement>();
             // services.AddTransient<AnticipationManagement>();
             // services.AddTransient<AdiqManagement>();

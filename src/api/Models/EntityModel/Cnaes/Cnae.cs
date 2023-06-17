@@ -6,7 +6,7 @@ namespace api.Models.EntityModel.Cnaes
     {
         public int Code { get; set; }
         public string? Name { get; set; }
-        public ICollection<JuristicPerson>? JuristicPersons { get; set; }
+        public ICollection<JuristicPerson>? JuristicPeople { get; set; }
 
     }
 }
