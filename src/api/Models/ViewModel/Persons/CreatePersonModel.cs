@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using api.Models.EntityModel.Addresses;
 using api.Models.EntityModel.JuristicPersons;
 using api.Models.EntityModel.NaturalPersons;
@@ -8,33 +7,35 @@ using api.Models.ViewModel.Addresses;
 using api.Models.ViewModel.JuristicPersons;
 using api.Models.ViewModel.NaturalPersons;
 using api.Models.ViewModel.Users;
+using api.Validations;
+using Newtonsoft.Json;
 
 namespace api.Models.ViewModel.Persons
 {
     public class CreatePersonModel
     {
-        [Display(Name = "phone")]
+        [JsonProperty("phone")]
         public string? Phone { get; set; }
 
-        [Display(Name = "mobile")]
+        [JsonProperty("mobile")]
         public string? Mobile { get; set; }
 
-        [Display(Name = "naturalPerson")]
+        [JsonProperty("naturalPerson"), JsonRequiredValidate]
         public NaturalPersonModel? NaturalPerson { get; set; }
 
-        [Display(Name = "juristicPerson")]
+        [JsonProperty("juristicPerson")]
         public JuristicPersonModel? JuristicPerson { get; set; }
 
-        [Display(Name = "user")]
+        [JsonProperty("user")]
         public UserModel? User { get; set; }
 
-        [Display(Name = "isPatient")]
+        [JsonProperty("isPatient")]
         public bool IsPatient { get; set; }
 
-        [Display(Name = "isEmployee")]
+        [JsonProperty("isEmployee")]
         public bool IsEmployee { get; set; }
 
-        [Display(Name = "address")]
+        [JsonProperty("address"), JsonRequiredValidate]
         public AddressModel? Address { get; set; }
 
         public Person Map()

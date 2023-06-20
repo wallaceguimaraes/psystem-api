@@ -1,23 +1,23 @@
-using System.ComponentModel.DataAnnotations;
 using api.Validations;
+using Newtonsoft.Json;
 
 namespace api.Models.ViewModel.JuristicPersons
 {
     public class JuristicPersonModel
     {
-        [Display(Name = "fullName")]
+        [JsonProperty("fullName")]
         public string? FullName { get; set; }
 
-        [Display(Name = "tradeName")]
+        [JsonProperty("tradeName")]
         public string? TradeName { get; set; }
 
-        [Display(Name = "businessTypeId")]
+        [JsonProperty("businessTypeId")]
         public int BusinessTypeId { get; set; }
 
-        [Display(Name = "taxDocument"), JsonRequired, JsonCnpj]
+        [JsonProperty("taxDocument"), JsonRequiredValidate, JsonCnpj]
         public string? TaxDocument { get; set; }
 
-        [Display(Name = "cnaeCode")]
+        [JsonProperty("cnaeCode")]
         public int CnaeCode { get; set; }
 
     }

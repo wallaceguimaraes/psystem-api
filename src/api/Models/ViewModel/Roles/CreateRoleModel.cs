@@ -1,15 +1,15 @@
-using System.ComponentModel.DataAnnotations;
 using api.Models.EntityModel.Roles;
 using api.Validations;
+using Newtonsoft.Json;
 
 namespace api.Models.ViewModel.Roles
 {
     public class CreateRoleModel
     {
-        [Display(Name = "name"), JsonRequired]
+        [JsonProperty("name"), JsonRequiredValidate]
         public string? Name { get; set; }
 
-        [Display(Name = "companyId"), JsonRequired]
+        [JsonProperty("companyId"), JsonRequiredValidate]
         public string? CompanyId { get; set; }
 
 

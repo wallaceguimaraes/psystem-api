@@ -1,27 +1,27 @@
-using System.ComponentModel.DataAnnotations;
 using api.Models.EntityModel.Companies;
+using api.Validations;
+using Newtonsoft.Json;
 
 namespace api.Models.ViewModel.Companies
 {
-
     public class CreateCompanyModel
     {
-        [Display(Name = "tradeName")]
+        [JsonProperty("tradeName"), JsonRequiredValidate]
         public string? TradeName { get; set; }
 
-        [Display(Name = "fullName")]
+        [JsonProperty("fullName"), JsonRequiredValidate]
         public string? FullName { get; set; }
 
-        [Display(Name = "taxDocument")]
+        [JsonProperty("taxDocument"), JsonRequiredValidate]
         public string? TaxDocument { get; set; }
 
-        [Display(Name = "cnaeCode")]
+        [JsonProperty("cnaeCode"), JsonRequiredValidate]
         public string? CnaeCode { get; set; }
 
-        [Display(Name = "siglaNegocio")]
+        [JsonProperty("siglaNegocio"), JsonRequiredValidate]
         public string? BusinessAcronym { get; set; }
 
-        [Display(Name = "negocio")]
+        [JsonProperty("negocio"), JsonRequiredValidate]
         public string? Business { get; set; }
 
         public Company Map()
@@ -29,14 +29,13 @@ namespace api.Models.ViewModel.Companies
             return new Company
             {
                 BusinessTypeName = Business,
-                TaxDocument = TaxDocument,
-                TradeName = TradeName,
-                FullName = FullName,
-                CnaeCode = CnaeCode,
-                BusinessTypeAcronym = BusinessAcronym,
+                // TaxDocument = TaxDocument,
+                // TradeName = TradeName,
+                // FullName = FullName,
+                // CnaeCode = CnaeCode,
+                // BusinessTypeAcronym = BusinessAcronym,
                 SystemImplementation = DateTime.Now
             };
         }
-
     }
 }

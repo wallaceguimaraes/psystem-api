@@ -10,7 +10,7 @@ namespace api.Models.ViewModel.Users
 {
     public class UserUpdateModel
     {
-        [Display(Name = "user.email"), JsonRequired, JsonEmail, JsonMaxLength(120)]
+        [Display(Name = "user.email"), JsonRequiredValidate, JsonEmail, JsonMaxLength(120)]
         public string? Email { get; set; }
 
         [Display(Name = "user.password"), JsonMinLength(8), JsonMaxLength(20)]

@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Validations
 {
-    public class JsonRequired : RequiredAttribute
+    public class JsonRequiredValidate : RequiredAttribute
     {
-        public JsonRequired()
+        public JsonRequiredValidate()
         {
             ErrorMessage = "{0}: Required.";
         }

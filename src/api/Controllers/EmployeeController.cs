@@ -33,9 +33,6 @@ namespace api.Controllers
         [Consumes("application/json")]
         public async Task<IActionResult> CreateEmployee([FromBody] CreatePersonModel model)
         {
-            var body = Request.Body;
-            var contentLength = Request.ContentLength;
-
             if (!await _service.CreateEmployee(model.Map()))
             {
                 return new EmployeeErrorResult(_service);

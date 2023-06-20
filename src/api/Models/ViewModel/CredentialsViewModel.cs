@@ -1,14 +1,14 @@
-using System.ComponentModel.DataAnnotations;
 using api.Validations;
+using Newtonsoft.Json;
 
 namespace api.Models.ViewModel
 {
     public class CredentialsViewModel
     {
-        [Display(Name = "email"), JsonRequired]
+        [JsonProperty("email"), JsonRequiredValidate]
         public string? Email { get; set; }
 
-        [Display(Name = "password"), JsonRequired]
+        [JsonProperty("password"), JsonRequiredValidate]
         public string? Password { get; set; }
 
     }
