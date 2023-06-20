@@ -29,11 +29,11 @@ namespace api.Models.ViewModel.Companies
             return new Company
             {
                 BusinessTypeName = Business,
-                // TaxDocument = TaxDocument,
-                // TradeName = TradeName,
-                // FullName = FullName,
-                // CnaeCode = CnaeCode,
-                // BusinessTypeAcronym = BusinessAcronym,
+                TaxDocument = TaxDocument,
+                TradeName = TradeName,
+                FullName = FullName,
+                CnaeCode = CnaeCode,
+                BusinessTypeAcronym = BusinessAcronym,
                 SystemImplementation = DateTime.Now
             };
         }
