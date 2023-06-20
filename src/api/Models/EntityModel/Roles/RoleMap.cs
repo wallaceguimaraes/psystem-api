@@ -9,7 +9,9 @@ namespace api.Models.EntityModel.Roles
         {
             entity.ToTable("Perfil", "cadastro");
             entity.HasKey(p => p.Id);
-            entity.Property(p => p.Id).ValueGeneratedOnAdd().UseMySqlIdentityColumn();
+            // entity.Property(p => p.Id).ValueGeneratedOnAdd().UseMySqlIdentityColumn();
+            entity.Property(p => p.Id).HasColumnName("Id").UseIdentityColumn();
+
             entity.Property(p => p.CreatedAt).HasColumnName("DataCadastro").IsRequired();
             entity.Property(p => p.CompanyId).HasColumnName("IdEmpresa").IsRequired();
             entity.Property(p => p.Name).HasColumnName("Nome").HasMaxLength(80).IsRequired().HasMaxLength(50);

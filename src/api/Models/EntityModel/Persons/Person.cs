@@ -14,7 +14,7 @@ namespace api.Models.EntityModel.Persons
         public bool IsPatient { get; set; }
         public bool IsEmployee { get; set; }
         public bool IsSuperAdmin { get; set; }
-        public DateTime InactivatedOn { get; set; }
+        public DateTime? InactivatedOn { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
         public RoleUser? RoleUser { get; set; }

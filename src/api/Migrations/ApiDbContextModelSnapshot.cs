@@ -15,8 +15,9 @@ namespace api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.5");
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("api.Models.EntityModel.Addresses.Address", b =>
                 {
@@ -26,7 +27,7 @@ namespace api.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Cidade");
 
                     b.Property<int>("CityId")
@@ -36,29 +37,29 @@ namespace api.Migrations
                     b.Property<string>("District")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("Bairro");
 
                     b.Property<string>("Line1")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("varchar(150)")
+                        .HasColumnType("nvarchar(150)")
                         .HasColumnName("Endereco");
 
                     b.Property<string>("Line2")
                         .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
+                        .HasColumnType("nvarchar(80)")
                         .HasColumnName("Complemento");
 
                     b.Property<string>("StreetNumber")
                         .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
+                        .HasColumnType("nvarchar(20)")
                         .HasColumnName("Numero");
 
                     b.Property<string>("ZipCode")
                         .IsRequired()
                         .HasMaxLength(9)
-                        .HasColumnType("varchar(9)")
+                        .HasColumnType("nvarchar(9)")
                         .HasColumnName("Cep");
 
                     b.HasKey("PersonId");
@@ -71,18 +72,21 @@ namespace api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Acronym")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
+                        .HasColumnType("nvarchar(10)")
                         .HasColumnName("Sigla");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
+                        .HasColumnType("nvarchar(80)")
                         .HasColumnName("Nome");
 
                     b.HasKey("Id");
@@ -98,7 +102,7 @@ namespace api.Migrations
 
                     b.Property<string>("Name")
                         .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("Nome");
 
                     b.HasKey("Code");
@@ -111,43 +115,46 @@ namespace api.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("BusinessTypeAcronym")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("SiglaTipoNegocio");
 
                     b.Property<string>("BusinessTypeName")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("TipoNegocio");
 
                     b.Property<string>("CnaeCode")
                         .HasMaxLength(15)
-                        .HasColumnType("varchar(15)")
+                        .HasColumnType("nvarchar(15)")
                         .HasColumnName("CodigoCnae");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("varchar(120)")
+                        .HasColumnType("nvarchar(120)")
                         .HasColumnName("RazaoSocial");
 
                     b.Property<DateTime>("SystemImplementation")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("ImplementacaoSistema");
 
                     b.Property<string>("TaxDocument")
                         .IsRequired()
                         .HasMaxLength(18)
-                        .HasColumnType("varchar(18)")
+                        .HasColumnType("nvarchar(18)")
                         .HasColumnName("Cnpj");
 
                     b.Property<string>("TradeName")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("varchar(120)")
+                        .HasColumnType("nvarchar(120)")
                         .HasColumnName("NomeFantasia");
 
                     b.HasKey("Id");
@@ -173,19 +180,19 @@ namespace api.Migrations
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("varchar(120)")
+                        .HasColumnType("nvarchar(120)")
                         .HasColumnName("RazaoSocial");
 
                     b.Property<string>("TaxDocument")
                         .IsRequired()
                         .HasMaxLength(18)
-                        .HasColumnType("varchar(18)")
+                        .HasColumnType("nvarchar(18)")
                         .HasColumnName("Cnpj");
 
                     b.Property<string>("TradeName")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("varchar(120)")
+                        .HasColumnType("nvarchar(120)")
                         .HasColumnName("NomeFantasia");
 
                     b.HasKey("PersonId");
@@ -212,17 +219,17 @@ namespace api.Migrations
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(155)
-                        .HasColumnType("varchar(155)")
+                        .HasColumnType("nvarchar(155)")
                         .HasColumnName("Nome");
 
                     b.Property<string>("Gender")
                         .HasMaxLength(1)
-                        .HasColumnType("varchar(1)")
+                        .HasColumnType("nvarchar(1)")
                         .HasColumnName("Genero");
 
                     b.Property<string>("TaxDocument")
                         .HasMaxLength(24)
-                        .HasColumnType("varchar(24)")
+                        .HasColumnType("nvarchar(24)")
                         .HasColumnName("Cpf");
 
                     b.HasKey("PersonId");
@@ -237,41 +244,44 @@ namespace api.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("DataCadastro");
 
-                    b.Property<DateTime>("InactivatedOn")
-                        .HasColumnType("datetime(6)")
+                    b.Property<DateTime?>("InactivatedOn")
+                        .HasColumnType("datetime2")
                         .HasColumnName("InativoEm");
 
                     b.Property<bool>("IsEmployee")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("Funcionario");
 
                     b.Property<bool>("IsPatient")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsSuperAdmin")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false)
                         .HasColumnName("SuperAdmin");
 
                     b.Property<string>("Mobile")
                         .HasMaxLength(44)
-                        .HasColumnType("varchar(44)")
+                        .HasColumnType("nvarchar(44)")
                         .HasColumnName("Celular");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(44)
-                        .HasColumnType("varchar(44)")
+                        .HasColumnType("nvarchar(44)")
                         .HasColumnName("Telefone");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("DataAtualizacao");
 
                     b.HasKey("Id");
@@ -285,7 +295,8 @@ namespace api.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long?>("HolderId")
                         .HasColumnType("bigint");
@@ -296,7 +307,8 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("HolderId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[HolderId] IS NOT NULL");
 
                     b.HasIndex("RoleId");
 
@@ -308,10 +320,13 @@ namespace api.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("Ativo");
 
                     b.Property<long?>("CompanyId")
@@ -320,13 +335,13 @@ namespace api.Migrations
                         .HasColumnName("IdEmpresa");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("DataCadastro");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("Nome");
 
                     b.HasKey("Id");
@@ -344,21 +359,21 @@ namespace api.Migrations
 
                     b.Property<bool>("Active")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(true)
                         .HasColumnName("Ativo");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("DataCadastro");
 
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(95)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("Email");
 
                     b.Property<string>("Password")
                         .HasMaxLength(120)
-                        .HasColumnType("varchar(120)")
+                        .HasColumnType("nvarchar(120)")
                         .HasColumnName("Senha");
 
                     b.Property<long>("RoleId")
@@ -369,12 +384,13 @@ namespace api.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Salt")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PersonId");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("Password");
 

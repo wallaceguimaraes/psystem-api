@@ -45,6 +45,7 @@ namespace api.Models.ViewModel.Persons
                 Mobile = Mobile,
                 IsPatient = IsPatient,
                 IsEmployee = IsEmployee,
+                InactivatedOn = null,
                 User = new User
                 {
                     Email = User.Email,

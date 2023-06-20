@@ -1,18 +1,14 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace api.Migrations
 {
-    public partial class CreateInitialsTable : Migration
+    public partial class CreateInitialTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
                 name: "cadastro");
-
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Cnae",
@@ -20,14 +16,12 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Codigo = table.Column<int>(type: "int", nullable: false),
-                    Nome = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cnae", x => x.Codigo);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Empresa",
@@ -35,26 +29,19 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    NomeFantasia = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    RazaoSocial = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cnpj = table.Column<string>(type: "varchar(18)", maxLength: 18, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    CodigoCnae = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TipoNegocio = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    SiglaTipoNegocio = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ImplementacaoSistema = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeFantasia = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    RazaoSocial = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    Cnpj = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
+                    CodigoCnae = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    TipoNegocio = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SiglaTipoNegocio = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImplementacaoSistema = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Empresa", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Pessoa",
@@ -62,23 +49,20 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Telefone = table.Column<string>(type: "varchar(44)", maxLength: 44, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Celular = table.Column<string>(type: "varchar(44)", maxLength: 44, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsPatient = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Funcionario = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    SuperAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
-                    InativoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DataAtualizacao = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Telefone = table.Column<string>(type: "nvarchar(44)", maxLength: 44, nullable: true),
+                    Celular = table.Column<string>(type: "nvarchar(44)", maxLength: 44, nullable: true),
+                    IsPatient = table.Column<bool>(type: "bit", nullable: false),
+                    Funcionario = table.Column<bool>(type: "bit", nullable: false),
+                    SuperAdmin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    InativoEm = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DataAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pessoa", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "TipoEmpresa",
@@ -86,17 +70,14 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Sigla = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    Sigla = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TipoEmpresa", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Perfil",
@@ -104,12 +85,11 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Ativo = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
                     IdEmpresa = table.Column<long>(type: "bigint", nullable: false),
-                    DataCadastro = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -121,8 +101,7 @@ namespace api.Migrations
                         principalTable: "Empresa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Endereco",
@@ -131,18 +110,12 @@ namespace api.Migrations
                 {
                     IdPessoa = table.Column<long>(type: "bigint", nullable: false),
                     IdCidade = table.Column<int>(type: "int", nullable: false),
-                    Bairro = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Endereco = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Complemento = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Numero = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cep = table.Column<string>(type: "varchar(9)", maxLength: 9, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cidade = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Bairro = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Endereco = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Complemento = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    Numero = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Cep = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,8 +127,7 @@ namespace api.Migrations
                         principalTable: "Pessoa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "PessoaFisica",
@@ -163,13 +135,10 @@ namespace api.Migrations
                 columns: table => new
                 {
                     IdPessoa = table.Column<long>(type: "bigint", nullable: false),
-                    Nome = table.Column<string>(type: "varchar(155)", maxLength: 155, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Nome = table.Column<string>(type: "nvarchar(155)", maxLength: 155, nullable: false),
                     DataNascimento = table.Column<DateTime>(type: "date", nullable: true),
-                    Genero = table.Column<string>(type: "varchar(1)", maxLength: 1, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cpf = table.Column<string>(type: "varchar(24)", maxLength: 24, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Genero = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: true),
+                    Cpf = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -181,8 +150,7 @@ namespace api.Migrations
                         principalTable: "Pessoa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "PessoaJuridica",
@@ -191,12 +159,9 @@ namespace api.Migrations
                 {
                     IdPessoa = table.Column<long>(type: "bigint", nullable: false),
                     IdTipoEmpresa = table.Column<int>(type: "int", nullable: false),
-                    NomeFantasia = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    RazaoSocial = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cnpj = table.Column<string>(type: "varchar(18)", maxLength: 18, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NomeFantasia = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    RazaoSocial = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    Cnpj = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
                     CodigoCnae = table.Column<int>(type: "int", maxLength: 15, nullable: true)
                 },
                 constraints: table =>
@@ -223,15 +188,14 @@ namespace api.Migrations
                         principalTable: "TipoEmpresa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "RoleUser",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     HolderId = table.Column<long>(type: "bigint", nullable: true),
                     RoleId = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -252,8 +216,7 @@ namespace api.Migrations
                         principalTable: "Pessoa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Usuario",
@@ -262,14 +225,11 @@ namespace api.Migrations
                 {
                     IdPessoa = table.Column<long>(type: "bigint", nullable: false),
                     IdPerfil = table.Column<long>(type: "bigint", nullable: false),
-                    Ativo = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: true),
-                    Email = table.Column<string>(type: "varchar(95)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Senha = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Salt = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataCadastro = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Senha = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
+                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RoleUserId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -288,8 +248,7 @@ namespace api.Migrations
                         principalTable: "RoleUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Perfil_IdEmpresa",
@@ -331,7 +290,8 @@ namespace api.Migrations
                 name: "IX_RoleUser_HolderId",
                 table: "RoleUser",
                 column: "HolderId",
-                unique: true);
+                unique: true,
+                filter: "[HolderId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleUser_RoleId",
@@ -343,7 +303,8 @@ namespace api.Migrations
                 schema: "cadastro",
                 table: "Usuario",
                 column: "Email",
-                unique: true);
+                unique: true,
+                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuario_RoleUserId",

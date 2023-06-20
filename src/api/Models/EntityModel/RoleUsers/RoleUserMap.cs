@@ -12,7 +12,9 @@ namespace api.Models.EntityModel.Roles
             entity.ToTable("PerfilUsuario", "cadastro");
             entity.HasKey(p => p.Id);
 
-            entity.Property(p => p.Id).ValueGeneratedOnAdd().UseMySqlIdentityColumn();
+            // entity.Property(p => p.Id).ValueGeneratedOnAdd().UseMySqlIdentityColumn();
+            entity.Property(p => p.Id).HasColumnName("Id").UseIdentityColumn();
+
             entity.Property(p => p.HolderId).HasColumnName("IdTitular");
             entity.Property(p => p.RoleId).HasColumnName("IdPerfil");
             entity.HasOne(p => p.Holder).WithOne(p => p.RoleUser).HasForeignKey<Person>(p => p.RoleUser);

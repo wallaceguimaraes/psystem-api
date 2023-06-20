@@ -16,7 +16,8 @@ namespace api.Models.EntityModel.Persons
 
             entity.HasKey(p => p.Id);
 
-            entity.Property(p => p.Id).ValueGeneratedOnAdd().UseMySqlIdentityColumn();
+            // entity.Property(p => p.Id).ValueGeneratedOnAdd().UseMySqlIdentityColumn();
+            entity.Property(p => p.Id).HasColumnName("Id").UseIdentityColumn();
             entity.Property(p => p.Phone).HasColumnName("Telefone").HasMaxLength(44);
             entity.Property(p => p.Mobile).HasColumnName("Celular").HasMaxLength(44);
             entity.Property(p => p.CreatedAt).HasColumnName("DataCadastro").IsRequired();

@@ -11,7 +11,6 @@ using api.Filters;
 using api.Infrastructure.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace api
 {
@@ -36,10 +35,6 @@ namespace api
             //     options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(60); // Define um tempo limite de leitura de cabeçalhos de 60 segundos
             //     options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(60); // Define um tempo limite de escrita de corpo de 60 segundos
             // });
-
-            // services.AddResponseCompression();
-            // services.AddHttpContextAccessor();
-
 
             services.AddControllersWithViews(options =>
                     {
@@ -70,30 +65,32 @@ namespace api
 
 
 
-            string connectionString = Configuration["ConnectionStrings:ConnectionString"];
-            ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
+            // string connectionString = Configuration["ConnectionStrings:ConnectionString"];
+            // ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
 
 
-            services.AddDbContext<ApiDbContext>(options =>
-            {
-                options.UseMySql(connectionString, serverVersion, mysqlOptions =>
-                {
-                    mysqlOptions.MigrationsHistoryTable("__MigrationHistory", "cadastro")
-                                .SchemaBehavior(MySqlSchemaBehavior.Ignore);
-                });
-            });
-
-            // optionsBuilder.UseMySql("connectionString",
-            //       mysqlOptions => mysqlOptions
-            //           .ServerVersion(new Version(8, 0, 26), ServerType.MySql)
-            //           .SchemaBehavior(MySqlSchemaBehavior.Ignore));
-
+            // services.AddDbContext<ApiDbContext>(options =>
+            // {
+            //     options.UseMySql(connectionString, serverVersion, mysqlOptions =>
+            //     {
+            //         mysqlOptions.MigrationsHistoryTable("__MigrationHistory", "cadastro")
+            //                     .SchemaBehavior(MySqlSchemaBehavior.Ignore);
+            //     });
+            // });
 
             // services.AddDbContext<ApiDbContext>(options =>
             // {
             //     options.UseSqlServer(Configuration.GetConnectionString("ConnectionString"),
             //         sqlServerOptions => sqlServerOptions.MigrationsHistoryTable("__MigrationHistory", "cadastro"));
             // });
+
+            services.AddDbContext<ApiDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"], mssql =>
+                {
+                    mssql.MigrationsHistoryTable(tableName: "__MigrationHistory", schema: "cadastro");
+                });
+            });
 
 
             services.AddTransientServices();

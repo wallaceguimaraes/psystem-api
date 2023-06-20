@@ -10,7 +10,8 @@ namespace api.Models.EntityModel.BusinessTypes
             entity.ToTable("TipoEmpresa", "cadastro");
 
             entity.HasKey(p => p.Id);
-            entity.Property(p => p.Id).ValueGeneratedOnAdd().UseMySqlIdentityColumn();
+            // entity.Property(p => p.Id).ValueGeneratedOnAdd().UseMySqlIdentityColumn();
+            entity.Property(p => p.Id).HasColumnName("Id").UseIdentityColumn();
             entity.Property(p => p.Name).HasColumnName("Nome").HasMaxLength(80).IsRequired();
             entity.Property(p => p.Acronym).HasColumnName("Sigla").HasMaxLength(10).IsRequired();
 
