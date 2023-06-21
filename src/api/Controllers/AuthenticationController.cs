@@ -2,6 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using api.Authorization;
+using api.Extensions.Http;
+using api.Filters;
+using api.Models.ResultModel.Successes;
 using api.Models.ServiceModel;
 using api.Models.ViewModel;
 using api.ResultModel.Successes.Authentication;
@@ -57,5 +60,14 @@ namespace api.Controllers
 
             return Unauthorized();
         }
+
+        [HttpGet("whoami"), Auth]
+        public Task<IActionResult> WhoAmI()
+        {
+            var whoAmI = HttpContext.WhoAmI();
+
+            return Task.FromResult<IActionResult>(new WhoAmIJson(whoAmI));
+        }
+
     }
 }
