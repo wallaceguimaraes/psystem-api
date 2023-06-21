@@ -1,3 +1,4 @@
+using api.Models.EntityModel.Persons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,14 +12,14 @@ namespace api.Models.EntityModel.Users
 
             entity.HasKey(p => p.PersonId);
             entity.HasIndex(p => p.Email).IsUnique();
-
             entity.Property(p => p.Email).HasColumnName("Email");
             entity.Property(p => p.PersonId).HasColumnName("IdPessoa");
             entity.Property(p => p.RoleId).HasColumnName("IdPerfil");
             entity.Property(p => p.Active).HasColumnName("Ativo").IsRequired().HasDefaultValue(true);
             entity.Property(p => p.CreatedAt).HasColumnName("DataCadastro").IsRequired();
             entity.Property(p => p.Password).HasColumnName("Senha").HasMaxLength(120);
-
+            entity.HasOne(p => p.Person).WithOne(p => p.User).HasForeignKey<Person>(p => p.Id);
+            entity.HasOne(p => p.Role).WithMany(p => p.Users).HasForeignKey(p => p.RoleId);
             entity.HasIndex(p => p.Email);
             entity.HasIndex(p => p.Password);
         }

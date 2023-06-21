@@ -12,7 +12,6 @@ namespace api.Models.ViewModel.Roles
         [JsonProperty("companyId"), JsonRequiredValidate]
         public string? CompanyId { get; set; }
 
-
         public Role Map()
         {
             return new Role

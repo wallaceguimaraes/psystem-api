@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace api.Migrations
 {
-    public partial class CreateInitialTables : Migration
+    public partial class CreateInitialsTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,27 +44,6 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pessoa",
-                schema: "cadastro",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Telefone = table.Column<string>(type: "nvarchar(44)", maxLength: 44, nullable: true),
-                    Celular = table.Column<string>(type: "nvarchar(44)", maxLength: 44, nullable: true),
-                    IsPatient = table.Column<bool>(type: "bit", nullable: false),
-                    Funcionario = table.Column<bool>(type: "bit", nullable: false),
-                    SuperAdmin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    InativoEm = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DataAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pessoa", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TipoEmpresa",
                 schema: "cadastro",
                 columns: table => new
@@ -96,6 +75,35 @@ namespace api.Migrations
                     table.PrimaryKey("PK_Perfil", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Perfil_Empresa_IdEmpresa",
+                        column: x => x.IdEmpresa,
+                        principalSchema: "cadastro",
+                        principalTable: "Empresa",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pessoa",
+                schema: "cadastro",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Telefone = table.Column<string>(type: "nvarchar(44)", maxLength: 44, nullable: true),
+                    Celular = table.Column<string>(type: "nvarchar(44)", maxLength: 44, nullable: true),
+                    IsPatient = table.Column<bool>(type: "bit", nullable: false),
+                    Funcionario = table.Column<bool>(type: "bit", nullable: false),
+                    SuperAdmin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    InativoEm = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DataAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IdEmpresa = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pessoa", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pessoa_Empresa_IdEmpresa",
                         column: x => x.IdEmpresa,
                         principalSchema: "cadastro",
                         principalTable: "Empresa",
@@ -191,34 +199,6 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleUser",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    HolderId = table.Column<long>(type: "bigint", nullable: true),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoleUser", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RoleUser_Perfil_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "cadastro",
-                        principalTable: "Perfil",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RoleUser_Pessoa_HolderId",
-                        column: x => x.HolderId,
-                        principalSchema: "cadastro",
-                        principalTable: "Pessoa",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Usuario",
                 schema: "cadastro",
                 columns: table => new
@@ -229,23 +209,23 @@ namespace api.Migrations
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Senha = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
                     Salt = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RoleUserId = table.Column<long>(type: "bigint", nullable: true)
+                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuario", x => x.IdPessoa);
                     table.ForeignKey(
+                        name: "FK_Usuario_Perfil_IdPerfil",
+                        column: x => x.IdPerfil,
+                        principalSchema: "cadastro",
+                        principalTable: "Perfil",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Usuario_Pessoa_IdPessoa",
                         column: x => x.IdPessoa,
                         principalSchema: "cadastro",
                         principalTable: "Pessoa",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Usuario_RoleUser_RoleUserId",
-                        column: x => x.RoleUserId,
-                        principalTable: "RoleUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -261,6 +241,12 @@ namespace api.Migrations
                 schema: "cadastro",
                 table: "Pessoa",
                 column: "Funcionario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pessoa_IdEmpresa",
+                schema: "cadastro",
+                table: "Pessoa",
+                column: "IdEmpresa");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PessoaFisica_Cpf",
@@ -287,18 +273,6 @@ namespace api.Migrations
                 column: "IdTipoEmpresa");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleUser_HolderId",
-                table: "RoleUser",
-                column: "HolderId",
-                unique: true,
-                filter: "[HolderId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoleUser_RoleId",
-                table: "RoleUser",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Usuario_Email",
                 schema: "cadastro",
                 table: "Usuario",
@@ -307,10 +281,10 @@ namespace api.Migrations
                 filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuario_RoleUserId",
+                name: "IX_Usuario_IdPerfil",
                 schema: "cadastro",
                 table: "Usuario",
-                column: "RoleUserId");
+                column: "IdPerfil");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuario_Senha",
@@ -344,9 +318,6 @@ namespace api.Migrations
             migrationBuilder.DropTable(
                 name: "TipoEmpresa",
                 schema: "cadastro");
-
-            migrationBuilder.DropTable(
-                name: "RoleUser");
 
             migrationBuilder.DropTable(
                 name: "Perfil",

@@ -249,6 +249,10 @@ namespace api.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<long>("CompanyId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("IdEmpresa");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("DataCadastro");
@@ -286,33 +290,11 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("IsEmployee");
 
                     b.ToTable("Pessoa", "cadastro");
-                });
-
-            modelBuilder.Entity("api.Models.EntityModel.RoleUsers.RoleUser", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long?>("HolderId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HolderId")
-                        .IsUnique()
-                        .HasFilter("[HolderId] IS NOT NULL");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("api.Models.EntityModel.Roles.Role", b =>
@@ -380,9 +362,6 @@ namespace api.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("IdPerfil");
 
-                    b.Property<long?>("RoleUserId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
 
@@ -394,7 +373,7 @@ namespace api.Migrations
 
                     b.HasIndex("Password");
 
-                    b.HasIndex("RoleUserId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Usuario", "cadastro");
                 });
@@ -447,22 +426,15 @@ namespace api.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("api.Models.EntityModel.RoleUsers.RoleUser", b =>
+            modelBuilder.Entity("api.Models.EntityModel.Persons.Person", b =>
                 {
-                    b.HasOne("api.Models.EntityModel.Persons.Person", "Holder")
-                        .WithOne("RoleUser")
-                        .HasForeignKey("api.Models.EntityModel.RoleUsers.RoleUser", "HolderId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("api.Models.EntityModel.Roles.Role", "Role")
-                        .WithMany("RoleUsers")
-                        .HasForeignKey("RoleId")
+                    b.HasOne("api.Models.EntityModel.Companies.Company", "Company")
+                        .WithMany("People")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Holder");
-
-                    b.Navigation("Role");
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("api.Models.EntityModel.Roles.Role", b =>
@@ -481,16 +453,18 @@ namespace api.Migrations
                     b.HasOne("api.Models.EntityModel.Persons.Person", "Person")
                         .WithOne("User")
                         .HasForeignKey("api.Models.EntityModel.Users.User", "PersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.EntityModel.Roles.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("api.Models.EntityModel.RoleUsers.RoleUser", "RoleUser")
-                        .WithMany()
-                        .HasForeignKey("RoleUserId");
-
                     b.Navigation("Person");
 
-                    b.Navigation("RoleUser");
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("api.Models.EntityModel.BusinessTypes.BusinessType", b =>
@@ -505,6 +479,8 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.EntityModel.Companies.Company", b =>
                 {
+                    b.Navigation("People");
+
                     b.Navigation("Roles");
                 });
 
@@ -516,14 +492,12 @@ namespace api.Migrations
 
                     b.Navigation("NaturalPerson");
 
-                    b.Navigation("RoleUser");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("api.Models.EntityModel.Roles.Role", b =>
                 {
-                    b.Navigation("RoleUsers");
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

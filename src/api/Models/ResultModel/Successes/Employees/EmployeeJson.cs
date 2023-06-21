@@ -13,7 +13,7 @@ namespace api.Models.ResultModel.Successes.Employees
             FullName = person.NaturalPerson.FullName;
             Email = person.User.Email;
             TaxDocument = person.JuristicPerson != null ? person.JuristicPerson.TaxDocument : person.NaturalPerson.TaxDocument;
-            Role = person.RoleUser.Role.Name;
+            Role = person.User.Role.Name;
             CreatedAt = person.CreatedAt;
         }
 

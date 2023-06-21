@@ -2,6 +2,7 @@ using api.Authorization;
 using api.Models.ServiceModel;
 using api.Models.ServiceModel.Companies;
 using api.Models.ServiceModel.Employees;
+using api.Models.ServiceModel.Roles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -116,37 +117,11 @@ namespace api.Extensions.DependencyInjection
 
         public static void AddTransientServices(this IServiceCollection services)
         {
-            // services.AddTransient<IAmazonS3Api, AmazonS3Api>();
-            // services.AddTransient<ILogoAmazonS3Api, LogoAmazonS3Api>();
-            // services.AddTransient<ILogoPartnerAmazonS3Api, LogoPartnerAmazonS3Api>();
-            // services.AddTransient<INotificationsApi, NotificationsProducer>();
-            // services.AddTransient<IHolderService, HolderService>();
-            // services.AddTransient<WebhooksManagement>();
-            // services.AddTransient<InstitutionAccountManagement>();
-            // services.AddTransient<HolderRegistration>();
-            // services.AddTransient<AntifraudAnalysis>();
-            // services.AddTransient<SellerRegistration>();
-            // services.AddTransient<AccountConfirmation>();
-            // services.AddTransient<PartnerRegistration>();
             services.AddTransient<UserAuthentication>();
             services.AddTransient<EmployeeService>();
             services.AddTransient<CompanyService>();
+            services.AddTransient<RoleService>();
 
-
-            // services.AddTransient<PresetManagement>();
-            // services.AddTransient<AnticipationManagement>();
-            // services.AddTransient<AdiqManagement>();
-            // services.AddTransient<DeactiveHolderManagement>();
-            // services.AddTransient<CryptographyHolderManagement>();
-            // services.AddTransient<FeaturesService>();
-            // services.AddTransient<IWebhooksProducer, WebhooksProducer>();
-            // services.AddTransient<IKN1Client, KN1Client>();
-            // services.AddTransient<ISellerAnalysis, SellerAnalysis>();
-            // services.AddTransient<AccountBlockManagement>();
-            // services.AddTransient<IDocumentAnalysisService, DocumentAnalysisService>();
-            // services.AddTransient<EmployeeRegistration>();
-            // services.AddTransient<IAccountIntegration, VindiManagement>();
-            // services.AddTransient<SimpleCommunicationService>();
         }
 
         // public static void AddSingletonServices(this IServiceCollection services)

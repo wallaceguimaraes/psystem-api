@@ -1,7 +1,6 @@
 using api.Models.EntityModel.Addresses;
 using api.Models.EntityModel.JuristicPersons;
 using api.Models.EntityModel.NaturalPersons;
-using api.Models.EntityModel.RoleUsers;
 using api.Models.EntityModel.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,25 +24,16 @@ namespace api.Models.EntityModel.Persons
             entity.Property(p => p.UpdatedAt).HasColumnName("DataAtualizacao");
             entity.Property(p => p.IsSuperAdmin).HasColumnName("SuperAdmin").HasDefaultValue(false);
             entity.Property(p => p.InactivatedOn).HasColumnName("InativoEm");
-
+            entity.Property(p => p.CompanyId).HasColumnName("IdEmpresa");
+            entity.HasOne(p => p.Company).WithMany(p => p.People).HasForeignKey(p => p.CompanyId);
             entity.HasOne(p => p.NaturalPerson).WithOne(p => p.Person).HasForeignKey<NaturalPerson>(p => p.PersonId);
             entity.HasOne(p => p.JuristicPerson).WithOne(p => p.Person).HasForeignKey<JuristicPerson>(p => p.PersonId);
             entity.HasOne(p => p.Address).WithOne(p => p.Person).HasForeignKey<Address>(p => p.PersonId);
-            entity.HasOne(p => p.User).WithOne(p => p.Person).HasForeignKey<User>(p => p.PersonId);
-            // entity.HasMany(p => p.Applications).WithOne(p => p.Partner).HasForeignKey(p => p.PartnerId);
-            entity.HasOne(p => p.RoleUser).WithOne(p => p.Holder).HasForeignKey<RoleUser>(p => p.HolderId).OnDelete(DeleteBehavior.Restrict);
-
-            // entity.HasMany(p => p.LastPasswords).WithOne(p => p.Person).HasForeignKey(p => p.PersonId).OnDelete(DeleteBehavior.Restrict);
-
-            // entity.Ignore(p => p.Situation);
-            // entity.Ignore(p => p.OriginApplication);
-            // entity.Ignore(p => p.PersonUpdateInstitution);
-            // entity.Ignore(p => p.InstitutionMigrationErrors);
+            // entity.HasOne(p => p.User).WithOne(p => p.Person).HasForeignKey<User>(p => p.PersonId);
+            // entity.HasOne(p => p.User).WithOne(p => p.Person).HasPrincipalKey<User>(p => p.PersonId);
+            entity.HasOne(p => p.User).WithOne(p => p.Person).HasForeignKey<User>(p => p.PersonId).OnDelete(DeleteBehavior.Restrict);
             entity.HasIndex(p => p.IsEmployee);
-
             entity.HasQueryFilter(p => p.InactivatedOn == null);
         }
-
-
     }
 }

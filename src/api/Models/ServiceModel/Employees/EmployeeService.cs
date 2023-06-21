@@ -1,6 +1,7 @@
 using api.Data.Context;
 using api.Models.EntityModel.Persons;
-using api.Models.EntityModel.Roles;
+using api.Models.ServiceModel.Roles;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Models.ServiceModel.Employees
 {
@@ -14,37 +15,17 @@ namespace api.Models.ServiceModel.Employees
             _logger = logger;
         }
 
-        public Role Role { get; private set; }
         public Person Person { get; private set; }
-
         public bool EmployeeRegisterError { get; private set; }
-        public bool RoleRegisterError { get; private set; }
 
-
-
-
-
-        public async Task<bool> CreateRole(Role role)
+        public async Task<bool> CreateEmployee(Person person, long companyId)
         {
-            try
-            {
-                _dbContext.Roles.Add(role);
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                var error = ex;
-                return !(RoleRegisterError = true);
-            }
+            bool roleExists = await _dbContext.Roles.WhereCompanyId(companyId)
+                                                    .WhereId(person.User.Role.Id)
+                                                    .AnyAsync();
+            if (!roleExists)
+                return !(EmployeeRegisterError = true);
 
-            Role = role;
-            return true;
-        }
-
-        public async Task<bool> CreateEmployee(Person person)
-        {
-            //pesquisa role
-            //salva roleuser com Id de role e user
             try
             {
                 _dbContext.Persons.Add(person);

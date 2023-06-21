@@ -1,3 +1,4 @@
+using api.Models.EntityModel.Persons;
 using api.Models.EntityModel.Roles;
 
 namespace api.Models.EntityModel.Companies
@@ -13,6 +14,8 @@ namespace api.Models.EntityModel.Companies
         public string? BusinessTypeAcronym { get; set; }
         public DateTime SystemImplementation { get; set; } = DateTime.Now;
         public ICollection<Role>? Roles { get; set; }
+        public ICollection<Person>? People { get; set; }
+
 
     }
 }

@@ -18,22 +18,14 @@ namespace api.Controllers
             _service = service;
         }
 
-        // [HttpPost, Route("role")]
-        // public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel model)
-        // {
-        //     if (!await _service.CreateRole(model.Map()))
-        //     {
-        //         return new EmployeeErrorResult(_service);
-        //     }
-
-        //     return new RoleJson(_service.Role);
-        // }
-
         [HttpPost]
         [Consumes("application/json")]
         public async Task<IActionResult> CreateEmployee([FromBody] CreatePersonModel model)
         {
-            if (!await _service.CreateEmployee(model.Map()))
+            //pega ID da empresa do funcionario logado
+            //companyId
+            long companyId = 3;
+            if (!await _service.CreateEmployee(model.Map(), companyId))
             {
                 return new EmployeeErrorResult(_service);
             }

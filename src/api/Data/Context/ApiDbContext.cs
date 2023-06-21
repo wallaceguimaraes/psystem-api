@@ -39,7 +39,6 @@ namespace api.Data.Context
             modelBuilder.Entity<NaturalPerson>().Map();
             modelBuilder.Entity<Person>().Map();
             modelBuilder.Entity<Role>().Map();
-
         }
     }
 }
