@@ -1,4 +1,6 @@
 using api.Models.EntityModel.Addresses;
+using api.Models.EntityModel.BusinessTypes;
+using api.Models.EntityModel.Cnaes;
 using api.Models.EntityModel.JuristicPersons;
 using api.Models.EntityModel.NaturalPersons;
 using api.Models.EntityModel.Persons;
@@ -38,7 +40,7 @@ namespace api.Models.ViewModel.Persons
         [JsonProperty("address"), JsonRequiredValidate]
         public AddressModel? Address { get; set; }
 
-        public Person Map()
+        public Person Map(long companyId)
         {
             var person = new Person
             {
@@ -47,6 +49,7 @@ namespace api.Models.ViewModel.Persons
                 IsPatient = IsPatient,
                 IsEmployee = IsEmployee,
                 InactivatedOn = null,
+                CompanyId = companyId,
                 User = new User
                 {
                     Email = User.Email,
@@ -65,17 +68,26 @@ namespace api.Models.ViewModel.Persons
                 JuristicPerson = JuristicPerson != null ?
                 new JuristicPerson
                 {
-                    BusinessTypeId = JuristicPerson.BusinessTypeId,
                     TradeName = JuristicPerson.TradeName,
                     FullName = JuristicPerson.FullName,
                     TaxDocument = JuristicPerson.TaxDocument,
-                    CnaeCode = JuristicPerson.CnaeCode
+                    Cnae = new Cnae
+                    {
+                        Code = JuristicPerson.CnaeCode,
+                        Name = JuristicPerson.CnaeDescription
+                    },
+                    BusinessType = new BusinessType
+                    {
+                        Name = JuristicPerson.BusinessName,
+                        Acronym = JuristicPerson.BusinessAcronym
+                    }
                 }
                 : null,
                 Address = new Address
                 {
                     CityId = Address.CityId,
                     StreetNumber = Address.StreetNumber,
+                    Line1 = Address.Line1,
                     Line2 = Address.Line2,
                     District = Address.District,
                     ZipCode = Address.ZipCode,

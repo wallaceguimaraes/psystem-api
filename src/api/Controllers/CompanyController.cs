@@ -43,9 +43,7 @@ namespace api.Controllers
         public async Task<IActionResult> UpdateCompany([FromRoute] string companyId, [FromBody] CreateCompanyModel model)
         {
             if (!await _service.UpdateCompany(model.Map(), Convert.ToInt32(companyId)))
-            {
                 return new CompanyErrorResult(_service);
-            }
 
             return new CompanyJson(_service.Company);
         }

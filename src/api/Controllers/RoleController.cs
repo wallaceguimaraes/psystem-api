@@ -1,4 +1,6 @@
+using api.Authorization;
 using api.Data.Context;
+using api.Filters;
 using api.Models.ResultModel.Errors;
 using api.Models.ResultModel.Successes.Roles;
 using api.Models.ServiceModel.Roles;
@@ -32,9 +34,14 @@ namespace api.Controllers
             return new RoleListJson(roles, roles.Count);
         }
 
-        [HttpPost]
+        [HttpPost, Auth]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel model)
         {
+            var user = User.Claims;
+
+            var personIdClaim = User.FindFirst(ApiClaimTypes.PersonId);
+            var saltClaim = User.FindFirst(ApiClaimTypes.Salt);
+
             if (!await _service.CreateRole(model.Map()))
                 return new RoleErrorResult(_service);
 

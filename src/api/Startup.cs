@@ -58,10 +58,10 @@ namespace api
             //     });
 
 
-            // services.AddJwtAuthentication(options =>
-            // {
-            //     Configuration.GetSection("Authorization").Bind(options);
-            // });
+            services.AddJwtAuthentication(options =>
+            {
+                Configuration.GetSection("Authorization").Bind(options);
+            });
 
 
 

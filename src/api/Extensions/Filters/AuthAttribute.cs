@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
-using api.Extensions.Http;
-using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using System.Net;
-using Microsoft.AspNetCore.Http;
 using api.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using api.Models.ServiceModel.Employees;
+using api.Extensions.Http;
+using api.Models.IntegrationModel.Model;
 
 namespace api.Filters
 {
@@ -23,7 +21,7 @@ namespace api.Filters
             _scope = scope;
         }
 
-        public AuthAttribute(string scope = null, bool requiredSecret = false)
+        public AuthAttribute(string? scope = null, bool requiredSecret = false)
         {
             _scope = scope;
             _requiredSecret = requiredSecret;
@@ -31,39 +29,48 @@ namespace api.Filters
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            var auth = context.HttpContext.RequestServices.GetRequiredService<IOptions<AuthOptions>>();
-            var secret = context.HttpContext.Request.Query["secret"].ToString();
+            var service = context.HttpContext.RequestServices.GetRequiredService<EmployeeService>();
+            var token = context.HttpContext.Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
-            if (_requiredSecret)
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+
+            if (jwtToken.ValidTo < DateTime.UtcNow)
             {
-                if (!SecretValid(auth.Value, secret))
-                {
-                    context.Result = new StatusCodeResult((int)HttpStatusCode.Unauthorized);
-                    context.HttpContext.Response.Clear();
-                }
-
+                context.Result = new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+                context.HttpContext.Response.Clear();
                 return;
             }
 
-            if (context.HttpContext.Request.Headers.ContainsKey(HeaderNames.Authorization))
+            var personIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ApiClaimTypes.PersonId);
+            var saltClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ApiClaimTypes.Salt);
+
+            if (personIdClaim != null && saltClaim != null)
             {
-                // var accountApi = context.HttpContext.RequestServices.GetRequiredService<IAccountApi>();
-                // var token = context.HttpContext.Request.Headers[HeaderNames.Authorization];
-                // var permission = new Permission { Service = Service, Scope = _scope };
+                var personId = personIdClaim.Value;
+                var salt = saltClaim.Value;
 
+                var user = await service.FindEmployeeAuthenticated(personId);
 
-                // var whoAmI = await accountApi.WhoAmI(token, permission);
-                // var accessGranted = whoAmI?.AccessGranted ?? false;
-
-                var accessGranted = true;
-                if (accessGranted)
+                if (user != null)
                 {
-                    // context.HttpContext.SetWhoAmI(whoAmI);
+                    var whoAmI = new WhoAmI
+                    {
+                        Person = user.Person,
+                        User = user,
+                        AccessGranted = true,
+                        AccessedByEmployee = user.Person.IsEmployee,
+                        AccessedBySuperAdmin = user.Role.Name.Equals("superadmin")
+                    };
+
+                    context.HttpContext.SetWhoAmI(whoAmI);
                     return;
                 }
+
             }
 
             context.Result = new UnauthorizedResult();
+            context.HttpContext.Response.Clear();
         }
 
         private bool SecretValid(AuthOptions options, string secretReceived)

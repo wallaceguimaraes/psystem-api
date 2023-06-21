@@ -1,3 +1,5 @@
+using api.Extensions.Http;
+using api.Filters;
 using api.Models.ResultModel.Errors;
 using api.Models.ResultModel.Successes.Employees;
 using api.Models.ServiceModel.Employees;
@@ -18,21 +20,17 @@ namespace api.Controllers
             _service = service;
         }
 
-        [HttpPost]
+        [HttpPost, Auth]
         [Consumes("application/json")]
         public async Task<IActionResult> CreateEmployee([FromBody] CreatePersonModel model)
         {
-            //pega ID da empresa do funcionario logado
-            //companyId
-            long companyId = 3;
-            if (!await _service.CreateEmployee(model.Map(), companyId))
-            {
+            var whoAmI = HttpContext.WhoAmI();
+
+            if (!await _service.CreateEmployee(model.Map(whoAmI.Person.CompanyId)))
                 return new EmployeeErrorResult(_service);
-            }
 
             return new EmployeeJson(_service.Person);
         }
-
 
     }
 }

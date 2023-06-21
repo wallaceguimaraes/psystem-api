@@ -147,27 +147,8 @@ namespace api.Extensions.DependencyInjection
         public static void ConfigureOptions(this IServiceCollection services, IConfiguration config)
         {
             services.AddOptions();
+            services.Configure<AuthOptions>(config.GetSection("Authorization"));
 
-            // services.Configure<AmazonS3ApiOptions>(config.GetSection("Integration:AmazonS3"));
-            // services.Configure<LogoAmazonS3ApiOptions>(config.GetSection("Integration:LogoAmazonS3"));
-            // services.Configure<LogoPartnerAmazonS3ApiOptions>(config.GetSection("Integration:LogoPartnerAmazonS3"));
-            // services.Configure<PaymentsApiOptions>(config.GetSection("Integration:Payments"));
-            // services.Configure<NotificationsApiOptions>(config.GetSection("Integration:Notifications"));
-            // services.Configure<WarningOptions>(config.GetSection("Integration:Warnings"));
-            // services.Configure<TransfeeraApiOptions>(config.GetSection("Integration:Transfeera"));
-            // services.Configure<PaymentAccountApiOptions>(config.GetSection("Integration:PaymentAccount"));
-            // services.Configure<TransferDaysOptions>(config.GetSection("TransferDays"));
-            // services.Configure<ZoopApiOptions>(config.GetSection("Integration:Zoop"));
-            // services.Configure<AntifraudApiOptions>(config.GetSection("Integration:Antifraud"));
-            // services.Configure<AdiqApiOptions>(config.GetSection("Integration:Adiq"));
-            // services.Configure<KN1Options>(config.GetSection("Integration:KN1"));
-            // services.Configure<DocumentAnalysisOptions>(config.GetSection("Antifraud:DocumentAnalysis"));
-            // services.Configure<IdWallOptions>(config.GetSection("Integration:IdWall"));
-            // services.Configure<ViacepOptions>(config.GetSection("Integration:Viacep"));
-            // services.Configure<UserAuthenticationOptions>(config.GetSection("UserAuthentication"));
-            // services.Configure<SellerRegistrationOptions>(config.GetSection("SellerRegistration"));
-            // services.Configure<VindiApiOptions>(config.GetSection("Integration:VindiApi"));
-            // services.Configure<EmailListOptions>(config.GetSection("EmailList"));
         }
     }
 }
